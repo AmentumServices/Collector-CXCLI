@@ -31,10 +31,6 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y skopeo
 
-      - name: DSO Login
-        run: |
-          skopeo login registry1.dso.mil -u ${{ secrets.REGISTRY_USER }} -p ${{ secrets.REGISTRY_TOKEN }}
-
       - name: Run Skopeo Sync
         run: |
           skopeo sync \
@@ -86,9 +82,27 @@ jobs:
           name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
           path: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
 
+  Artifacts:
+      needs: [Date]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Grab released bits ${{ vars.COLLECTOR }}
+          run: |
+            curl https://github.com/Checkmarx/ast-cli/releases/download/2.1.5/ast-cli_2.1.5_linux_x64.tar.gz
+            curl https://github.com/Checkmarx/ast-cli/releases/download/2.0.76/ast-cli_2.0.76_linux_x64.tar.gz
+            curl https://github.com/Checkmarx/ast-cli/releases/download/2.1.5/ast-cli_2.1.5_checksums.txt
+            curl https://github.com/Checkmarx/ast-cli/releases/download/2.0.76/ast-cli_2.0.76_checksums.txt
+            ls -Alht *
+
+        - name: Upload Submofule Release Artifacts
+          uses: actions/upload-artifact@v4
+          with:
+            name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}
+            path: *.??*
+
   Release:
     runs-on: ubuntu-latest
-    needs: [Date, Code, Skopeo]
+    needs: [Date, Code, Skopeo, Artifacts]
     permissions:
       contents: write
       pull-requests: read
@@ -128,3 +142,5 @@ jobs:
           files: |
             ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
             ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz
+            ${{ vars.COLLECTOR }}-*.gz
+            ${{ vars.COLLECTOR }}-*.txt

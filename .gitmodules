@@ -1,0 +1,3 @@
+[submodule "ast-cli"]
+	path = ast-cli
+	url = https://github.com/Checkmarx/ast-cli.git

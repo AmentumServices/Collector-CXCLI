@@ -1,4 +1,4 @@
-name: ast-cli Collector (main)
+name: ast-cli Collector main
 run-name: ${{ github.actor }} is Collecting 🚀
 on:
   push:
@@ -98,7 +98,7 @@ jobs:
           uses: actions/upload-artifact@v4
           with:
             name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}
-            path: *.??*
+            path: "*.??*"
 
   Release:
     runs-on: ubuntu-latest

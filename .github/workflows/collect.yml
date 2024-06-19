@@ -92,7 +92,7 @@ jobs:
             curl https://github.com/Checkmarx/ast-cli/releases/download/2.0.76/ast-cli_2.0.76_linux_x64.tar.gz
             curl https://github.com/Checkmarx/ast-cli/releases/download/2.1.5/ast-cli_2.1.5_checksums.txt
             curl https://github.com/Checkmarx/ast-cli/releases/download/2.0.76/ast-cli_2.0.76_checksums.txt
-            ls -Alht *
+            ls -Alht
 
         - name: Upload Submofule Release Artifacts
           uses: actions/upload-artifact@v4

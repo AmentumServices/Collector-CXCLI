@@ -97,7 +97,7 @@ jobs:
 
         - name: Create Artifact ZIP
           run: |
-            zip -jD ${{ vars.COLLECTOR }}-bin-${{ needs.Date.outputs.Date }}.zip \
+            zip -jD ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.zip \
               ${{ vars.COLLECTOR }}*
 
         - name: Upload Submofule Release Artifacts
@@ -148,5 +148,6 @@ jobs:
           files: |
             ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
             ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz
+            ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.zip
             ${{ vars.COLLECTOR }}*.gz
             ${{ vars.COLLECTOR }}*.txt

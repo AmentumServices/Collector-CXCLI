@@ -92,12 +92,18 @@ jobs:
             curl -LJO https://github.com/Checkmarx/ast-cli/releases/download/2.0.76/ast-cli_2.0.76_linux_x64.tar.gz
             curl -LJO https://github.com/Checkmarx/ast-cli/releases/download/2.1.5/ast-cli_2.1.5_checksums.txt
             curl -LJO https://github.com/Checkmarx/ast-cli/releases/download/2.0.76/ast-cli_2.0.76_checksums.txt
+            echo -e "\nList Downloads"
             ls -Alht *
+
+        - name: Create Artifact ZIP
+          run: |
+            zip -jD ${{ vars.COLLECTOR }}-bin-${{ needs.Date.outputs.Date }}.zip \
+              ${{ vars.COLLECTOR }}*
 
         - name: Upload Submofule Release Artifacts
           uses: actions/upload-artifact@v4
           with:
-            name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}
+            name: ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.zip
             path: "*.??*"
 
   Release:
@@ -116,7 +122,7 @@ jobs:
           merge-multiple: true
 
       - name: Show Artifacts
-        run: ls -alh ${{ vars.COLLECTOR }}-*.*
+        run: ls -alh ${{ vars.COLLECTOR }}*.*
 
       - name: Set up git
         run: |
@@ -142,5 +148,5 @@ jobs:
           files: |
             ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.bundle
             ${{ vars.COLLECTOR }}-${{ needs.Date.outputs.Date }}.tgz
-            ${{ vars.COLLECTOR }}-*.gz
-            ${{ vars.COLLECTOR }}-*.txt
+            ${{ vars.COLLECTOR }}*.gz
+            ${{ vars.COLLECTOR }}*.txt
